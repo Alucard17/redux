@@ -96,7 +96,7 @@ const userMembershipUpdatedOnSpace = <
     byId: { ...state.byId },
   };
 
-  let clonedSpace = [...newState.byId[payload.data.spaceId]];
+  let clonedSpace = newState.byId[payload.data.spaceId];
 
   if (clonedSpace !== undefined) {
     clonedSpace = clonedSpace.map((user) => {
