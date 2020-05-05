@@ -2,9 +2,9 @@ import { AnyAction } from 'redux';
 import { UserActions, UserListenerActions, User } from './UserActions';
 import { MembersActions, Members } from '../../features/members/MembersActions';
 import { MembershipActions, Membership } from '../../features/membership/MembershipActions';
-import { Space } from '../../features/space/SpaceActions';
-import { ObjectsCustom } from '../../foundations/ObjectsCustom';
 import { AnyMeta } from '../../foundations/ActionMeta';
+import { ObjectsCustom } from 'foundations/ObjectsCustom';
+import { Space } from 'features/space/SpaceActions';
 export interface UsersByIdState<ReceivedUser extends User<ObjectsCustom>> {
     byId: {
         [userId: string]: ReceivedUser;

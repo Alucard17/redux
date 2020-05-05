@@ -1,6 +1,5 @@
 import { AnyAction } from 'redux';
-import { PresenceListenerActions } from './PresenceListener';
-import { Presence, HereNowRetrievedAction, PresenceStateRetrievedAction } from './PresenceActions';
+import { PresenceListenerActions, Presence, HereNowRetrievedAction, PresenceStateRetrievedAction } from './PresenceActions';
 export interface PresencebyIdState<ReceivedPresence extends Presence> {
     byId: {
         [channelId: string]: {

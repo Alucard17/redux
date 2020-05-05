@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { SpaceRequest, UpdatingSpaceAction, SpaceUpdatedAction, ErrorUpdatingSpaceAction, SpaceError, Space, SpaceSuccess } from '../SpaceActions';
+import { UpdatingSpaceAction, SpaceUpdatedAction, ErrorUpdatingSpaceAction, SpaceError, SpaceSuccess, SpaceRequest, Space } from '../SpaceActions';
 import { SpaceActionType } from '../SpaceActionType.enum';
 import { PubnubThunkContext } from '../../../foundations/ThunkTypes';
 import { ActionMeta, AnyMeta } from '../../../foundations/ActionMeta';

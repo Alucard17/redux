@@ -1,8 +1,8 @@
 import { AnyAction } from 'redux';
 import { MembershipListenerActions, MembershipActions, Membership } from './MembershipActions';
-import { ObjectsCustom } from '../../foundations/ObjectsCustom';
 import { AnyMeta } from '../../foundations/ActionMeta';
-import { User } from '../user/UserActions';
+import { ObjectsCustom } from 'foundations/ObjectsCustom';
+import { User } from 'features/user/UserActions';
 export declare type MembershipByUserIdState<ReceivedMembership extends Membership<ObjectsCustom, User<ObjectsCustom>>> = {
     byId: {
         [userId: string]: ReceivedMembership[];

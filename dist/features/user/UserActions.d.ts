@@ -1,7 +1,7 @@
+import Pubnub from 'pubnub';
 import { UserActionType } from './UserActionType.enum';
-import { PubNubApiStatus } from '../../foundations/PubNubApi';
-import { ObjectsCustom, AnyCustom } from '../../foundations/ObjectsCustom';
 import { ActionMeta } from '../../foundations/ActionMeta';
+import { ObjectsCustom, AnyCustom } from 'foundations/ObjectsCustom';
 export interface User<CustomSpaceFields extends ObjectsCustom = AnyCustom> {
     id: string;
     name: string;
@@ -25,6 +25,20 @@ export interface UserRequestOptions {
         customFields?: boolean;
     };
 }
+export interface UserRequest extends User<ObjectsCustom>, UserRequestOptions {
+}
+export interface UserResponse<ReceivedUser extends User<ObjectsCustom>> {
+    status: number;
+    data: ReceivedUser;
+}
+export interface FetchUserByIdRequest extends UserRequestOptions {
+    userId: string;
+}
+export declare type FetchUsersRequest = UserRequestOptions;
+export interface FetchUsersResponse<ReceivedUser extends User<ObjectsCustom>> {
+    status: number;
+    data: ReceivedUser[];
+}
 export interface UserEventMessage<ReceivedUser extends User<ObjectsCustom>> {
     data: ReceivedUser;
     event: string;
@@ -33,62 +47,43 @@ export interface UserEventMessage<ReceivedUser extends User<ObjectsCustom>> {
 export declare type UserListenerPayload<ReceivedUser extends User<ObjectsCustom>> = {
     message: UserEventMessage<ReceivedUser>;
 };
-export declare type FetchUsersRequest = UserRequestOptions;
-export interface FetchUsersResponse<ReceivedUser extends User<ObjectsCustom>> {
-    status: string;
-    data: ReceivedUser[];
-}
-export interface FetchUsersError {
-    request: FetchUsersRequest;
-    status: PubNubApiStatus;
-}
 export interface FetchUsersSuccess<ReceivedUser extends User<ObjectsCustom>> {
     request: FetchUsersRequest;
     response: FetchUsersResponse<ReceivedUser>;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
-export interface UserRequest extends User<ObjectsCustom>, UserRequestOptions {
+export interface FetchUsersError {
+    request: FetchUsersRequest;
+    status: Pubnub.PubnubStatus;
 }
 export interface UserSuccess<ReceivedUser extends User<ObjectsCustom>> {
     request: UserRequest;
     response: UserResponse<ReceivedUser>;
-    status: PubNubApiStatus;
-}
-export interface UserResponse<ReceivedUser extends User<ObjectsCustom>> {
-    status: string;
-    data: ReceivedUser;
+    status: Pubnub.PubnubStatus;
 }
 export interface UserError {
     request: UserRequest;
-    status: PubNubApiStatus;
-}
-export interface FetchUserByIdRequest extends UserRequestOptions {
-    userId: string;
+    status: Pubnub.PubnubStatus;
 }
 export interface FetchUserByIdSuccess<ReceivedUser extends User<ObjectsCustom>> {
     request: FetchUserByIdRequest;
     response: UserResponse<ReceivedUser>;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface FetchUserByIdError {
     request: FetchUserByIdRequest;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface DeleteUserRequest {
     userId: string;
 }
-export interface DeleteUserResponse {
-    status: number;
-    request: DeleteUserRequest;
-}
 export interface DeleteUserSuccess {
     request: DeleteUserRequest;
-    response: DeleteUserResponse;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface DeleteUserError {
     request: DeleteUserRequest;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface FetchingUsersAction<Meta extends ActionMeta> {
     type: typeof UserActionType.FETCHING_USERS;

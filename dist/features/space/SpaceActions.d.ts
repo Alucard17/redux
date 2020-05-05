@@ -1,7 +1,10 @@
+import Pubnub from 'pubnub';
 import { SpaceActionType } from './SpaceActionType.enum';
-import { ObjectsCustom, AnyCustom } from '../../foundations/ObjectsCustom';
 import { ActionMeta } from '../../foundations/ActionMeta';
-import { PubNubApiStatus } from '../../foundations/PubNubApi';
+import { ObjectsCustom, AnyCustom } from 'foundations/ObjectsCustom';
+export declare type SpaceCallback<SpaceType extends Space<ObjectsCustom>> = (status: Pubnub.PubnubStatus, response: SpaceResponse<SpaceType>) => void;
+export declare type DeleteSpaceCallback = (status: Pubnub.PubnubStatus) => void;
+export declare type FetchSpacesCallback<SpaceType extends Space<ObjectsCustom>> = (status: Pubnub.PubnubStatus, response: FetchSpacesResponse<SpaceType>) => void;
 export interface Space<CustomSpaceFields extends ObjectsCustom = AnyCustom> {
     id: string;
     name: string;
@@ -23,6 +26,17 @@ export interface SpaceRequestOptions {
         customFields?: boolean;
     };
 }
+export declare type FetchSpacesRequest = SpaceRequestOptions;
+export interface FetchSpacesResponse<ReceivedSpace extends Space<ObjectsCustom>> {
+    status: number;
+    data: ReceivedSpace[];
+}
+export interface SpaceRequest extends Space<ObjectsCustom>, SpaceRequestOptions {
+}
+export interface SpaceResponse<ReceivedSpace extends Space<ObjectsCustom>> {
+    status: number;
+    data: ReceivedSpace;
+}
 export interface SpaceEventMessage<ReceivedSpace extends Space<ObjectsCustom>> {
     data: ReceivedSpace;
     event: string;
@@ -31,63 +45,46 @@ export interface SpaceEventMessage<ReceivedSpace extends Space<ObjectsCustom>> {
 export declare type SpaceListenerPayload<ReceivedSpace extends Space<ObjectsCustom>> = {
     message: SpaceEventMessage<ReceivedSpace>;
 };
-export declare type FetchSpacesRequest = SpaceRequestOptions;
-declare type FetchSpacesRequest = SpaceRequestOptions;
-export interface FetchSpacesResponse<ReceivedSpace extends Space<ObjectsCustom>> {
-    status: string;
-    data: ReceivedSpace[];
+export interface FetchSpaceByIdRequest extends SpaceRequestOptions {
+    spaceId: string;
 }
 export interface FetchSpacesError {
     request: FetchSpacesRequest;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface FetchSpacesSuccess<ReceivedSpace extends Space<ObjectsCustom>> {
     request: FetchSpacesRequest;
     response: FetchSpacesResponse<ReceivedSpace>;
-    status: PubNubApiStatus;
-}
-export interface SpaceRequest extends Space<ObjectsCustom>, SpaceRequestOptions {
+    status: Pubnub.PubnubStatus;
 }
 export interface SpaceSuccess<ReceivedSpace extends Space<ObjectsCustom>> {
     request: SpaceRequest;
     response: SpaceResponse<ReceivedSpace>;
-    status: PubNubApiStatus;
-}
-export interface SpaceResponse<ReceivedSpace extends Space<ObjectsCustom>> {
-    status: string;
-    data: ReceivedSpace;
+    status: Pubnub.PubnubStatus;
 }
 export interface SpaceError {
     request: SpaceRequest;
-    status: PubNubApiStatus;
-}
-export interface FetchSpaceByIdRequest extends SpaceRequestOptions {
-    spaceId: string;
+    status: Pubnub.PubnubStatus;
 }
 export interface FetchSpaceByIdSuccess<ReceivedSpace extends Space<ObjectsCustom>> {
     request: FetchSpaceByIdRequest;
     response: SpaceResponse<ReceivedSpace>;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface FetchSpaceByIdError {
     request: FetchSpaceByIdRequest;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface DeleteSpaceRequest {
     spaceId: string;
 }
-export interface DeleteSpaceResponse {
-    status: number;
-    request: DeleteSpaceRequest;
-}
 export interface DeleteSpaceSuccess {
     request: DeleteSpaceRequest;
-    response: DeleteSpaceResponse;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface DeleteSpaceError {
     request: DeleteSpaceRequest;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface FetchingSpacesAction<Meta extends ActionMeta> {
     type: typeof SpaceActionType.FETCHING_SPACES;
@@ -179,4 +176,3 @@ export interface SpaceDeletedEventAction<ReceivedSpace extends Space<ObjectsCust
 }
 export declare type SpaceActions<ReceivedSpace extends Space<ObjectsCustom>, Meta extends ActionMeta> = FetchingSpacesAction<Meta> | SpacesRetrievedAction<ReceivedSpace, Meta> | ErrorFetchingSpacesAction<Meta> | FetchingSpaceByIdAction<Meta> | SpaceRetrievedAction<ReceivedSpace, Meta> | ErrorFetchingSpaceByIdAction<Meta> | CreatingSpaceAction<Meta> | SpaceCreatedAction<ReceivedSpace, Meta> | ErrorCreatingSpaceAction<Meta> | UpdatingSpaceAction<Meta> | SpaceUpdatedAction<ReceivedSpace, Meta> | ErrorUpdatingSpaceAction<Meta> | DeletingSpaceAction<Meta> | SpaceDeletedAction<Meta> | ErrorDeletingSpaceAction<Meta>;
 export declare type SpaceListenerActions<ReceivedSpace extends Space<ObjectsCustom>> = SpaceUpdatedEventAction<ReceivedSpace> | SpaceDeletedEventAction<ReceivedSpace>;
-export {};

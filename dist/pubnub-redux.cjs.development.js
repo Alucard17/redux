@@ -506,7 +506,11 @@ var removeMembers = function removeMembers(request, meta) {
     var pubnub = _ref.pubnub;
     return new Promise(function (resolve, reject) {
       dispatch(removingMembers(request, meta));
-      pubnub.api.removeMembers(_extends({}, request), function (status, response) {
+      pubnub.api.removeMembers(_extends({}, request, {
+        users: request.users.map(function (user) {
+          return user.id;
+        })
+      }), function (status, response) {
         if (status.error) {
           var payload = {
             request: request,
@@ -844,7 +848,7 @@ var deleteSpace = function deleteSpace(request, meta) {
     var pubnub = _ref.pubnub;
     return new Promise(function (resolve, reject) {
       dispatch(deletingSpace(request, meta));
-      pubnub.api.deleteSpace(request.spaceId, function (status, response) {
+      pubnub.api.deleteSpace(request.spaceId, function (status) {
         if (status.error) {
           var payload = {
             request: request,
@@ -855,7 +859,6 @@ var deleteSpace = function deleteSpace(request, meta) {
         } else {
           var _payload = {
             request: request,
-            response: response,
             status: status
           };
           dispatch(spaceDeleted(_payload, meta));
@@ -1165,7 +1168,7 @@ var deleteUser = function deleteUser(request, meta) {
     var pubnub = _ref.pubnub;
     return new Promise(function (resolve, reject) {
       dispatch(deletingUser(request, meta));
-      pubnub.api.deleteUser(request.userId, function (status, response) {
+      pubnub.api.deleteUser(request.userId, function (status) {
         if (status.error) {
           var payload = {
             request: request,
@@ -1176,7 +1179,6 @@ var deleteUser = function deleteUser(request, meta) {
         } else {
           var _payload = {
             request: request,
-            response: response,
             status: status
           };
           dispatch(userDeleted(_payload, meta));
@@ -1662,7 +1664,7 @@ var userStateChange = function userStateChange(payload) {
     type: exports.PresenceActionType.STATE_CHANGE_EVENT,
     payload: payload
   };
-}; // end::RDX-type-presence-listener-action[]
+}; // end::RDX-type-presence-user-change[]
 // tag::RDX-method-listener-presence[]
 
 var createPresenceListener = function createPresenceListener(dispatch) {
@@ -2646,10 +2648,11 @@ var userAddedToSpace$1 = function userAddedToSpace(state, payload) {
     var newState = {
       byId: _extends({}, state.byId)
     };
-    newState.byId[payload.data.userId] = [].concat(newState.byId[payload.data.userId], [{
+    var newMembership = {
       id: payload.data.spaceId,
       custom: payload.data.custom
-    }]);
+    };
+    newState.byId[payload.data.userId] = [].concat(newState.byId[payload.data.userId], [newMembership]);
     return newState;
   }
 
@@ -2745,10 +2748,11 @@ var userAddedToSpace$2 = function userAddedToSpace(state, payload) {
     var newState = {
       byId: _extends({}, state.byId)
     };
-    newState.byId[payload.data.spaceId] = [].concat(newState.byId[payload.data.spaceId], [{
+    var newMembers = {
       id: payload.data.userId,
       custom: payload.data.custom
-    }]);
+    };
+    newState.byId[payload.data.spaceId] = [].concat(newState.byId[payload.data.spaceId], [newMembers]);
     return newState;
   }
 

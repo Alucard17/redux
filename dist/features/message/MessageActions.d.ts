@@ -1,5 +1,6 @@
+import Pubnub from 'pubnub';
 import { MessageActionType } from './MessageActionType.enum';
-import { PubNubApiStatus } from '../../foundations/PubNubApi';
+import { AnyMeta } from 'foundations/ActionMeta';
 export interface Message {
     channel: string;
     message: object;
@@ -15,19 +16,18 @@ export interface MessageRequestOptions<MessageContentType, MessageMetaType> {
     meta?: MessageMetaType;
     ttl?: number;
 }
-export interface SendMessageRequest<MessageContentType, MessageMetaType> extends MessageRequestOptions<MessageContentType, MessageMetaType> {
-}
+export declare type SendMessageRequest<MessageContentType, MessageMetaType> = MessageRequestOptions<MessageContentType, MessageMetaType>;
 export interface SendMessageResponse {
     timetoken: number;
 }
 export interface SendMessageError<MessageContentType, MessageMetaType> {
     request: SendMessageRequest<MessageContentType, MessageMetaType>;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface SendMessageSuccess<MessageContentType, MessageMetaType> {
     request: SendMessageRequest<MessageContentType, MessageMetaType>;
     response: SendMessageResponse;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface MessageReceivedAction<MessageType> {
     type: typeof MessageActionType.MESSAGE_RECEIVED;
@@ -57,24 +57,25 @@ export interface MessageHistoryRequestOptions {
     start?: string;
     end?: string;
 }
-export interface FetchMessageHistoryRequest extends MessageHistoryRequestOptions {
+export declare type FetchMessageHistoryRequest = MessageHistoryRequestOptions;
+export interface HistoryResponseMessage<MessageContentType> {
+    timetoken?: string;
+    entry: MessageContentType;
+    meta?: AnyMeta;
 }
 export interface FetchMessageHistoryResponse<MessageContentType> {
     startTimeToken: number;
-    messages: [{
-        timetoken: string;
-        entry: MessageContentType;
-    }];
+    messages: HistoryResponseMessage<MessageContentType>[];
     endTimeToken: number;
 }
 export interface FetchMessageHistoryError {
     request: FetchMessageHistoryRequest;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface FetchMessageHistorySuccess<MessageContentType> {
     request: FetchMessageHistoryRequest;
     response: FetchMessageHistoryResponse<MessageContentType>;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface FetchingMessageHistoryAction<MetaType> {
     type: typeof MessageActionType.FETCHING_MESSAGE_HISTORY;

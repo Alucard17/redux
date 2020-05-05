@@ -1,8 +1,15 @@
+import Pubnub from 'pubnub';
 import { MembersActionType } from './MembersActionType.enum';
-import { PubNubApiStatus } from '../../foundations/PubNubApi';
-import { ObjectsCustom, AnyCustom } from '../../foundations/ObjectsCustom';
 import { ActionMeta } from '../../foundations/ActionMeta';
-import { User } from '../user/UserActions';
+import { ObjectsCustom, AnyCustom } from 'foundations/ObjectsCustom';
+import { Space } from 'features/space/SpaceActions';
+import { User } from 'features/user/UserActions';
+export declare type FetchMembersCallback<MembersType extends Members<ObjectsCustom, Space<ObjectsCustom>>> = (status: Pubnub.PubnubStatus, response: FetchMembersResponse<MembersType>) => void;
+export declare type MembersCallback<MembersType extends Members<ObjectsCustom, Space<ObjectsCustom>>> = (status: Pubnub.PubnubStatus, response: MembersResponse<MembersType>) => void;
+export interface MemberPage {
+    next?: string;
+    prev?: string;
+}
 export interface Members<CustomMemberFields extends ObjectsCustom = AnyCustom, ReceivedUser extends User<ObjectsCustom> = User> {
     id: string;
     custom?: CustomMemberFields;
@@ -11,9 +18,23 @@ export interface Members<CustomMemberFields extends ObjectsCustom = AnyCustom, R
     updated?: string;
     eTag?: string;
 }
-export interface MemberPage {
-    next?: string;
-    prev?: string;
+export declare type MembersRequest<ReceivedMembers extends Members<ObjectsCustom, User<ObjectsCustom>>> = {
+    spaceId: string;
+    users: ReceivedMembers[];
+};
+export interface MembersResponse<ReceivedMembers extends Members<ObjectsCustom, User<ObjectsCustom>>> {
+    status: number;
+    data: ReceivedMembers[];
+}
+export interface MembersFetchRequestOptions {
+    limit?: number;
+    page?: MemberPage;
+    include?: {
+        customFields?: boolean;
+        userFields?: boolean;
+        customUserFields?: boolean;
+        totalCount?: boolean;
+    };
 }
 export interface MembersFetchRequestOptions {
     limit?: number;
@@ -29,34 +50,26 @@ export interface FetchMembersRequest extends MembersFetchRequestOptions {
     spaceId: string;
 }
 export interface FetchMembersResponse<ReceivedMembers extends Members<ObjectsCustom, User<ObjectsCustom>>> {
-    status: string;
+    status: number;
     data: ReceivedMembers[];
 }
 export interface FetchMembersSuccess<ReceivedMembers extends Members<ObjectsCustom, User<ObjectsCustom>>> {
     request: FetchMembersRequest;
     response: FetchMembersResponse<ReceivedMembers>;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface FetchMembersError {
     request: FetchMembersRequest;
-    status: PubNubApiStatus;
-}
-export declare type MembersRequest<ReceivedMembers extends Members<ObjectsCustom, User<ObjectsCustom>>> = {
-    spaceId: string;
-    users: ReceivedMembers[];
-};
-export interface MembersResponse<ReceivedMembers extends Members<ObjectsCustom, User<ObjectsCustom>>> {
-    status: string;
-    data: ReceivedMembers[];
+    status: Pubnub.PubnubStatus;
 }
 export interface MembersSuccess<ReceivedMembers extends Members<ObjectsCustom, User<ObjectsCustom>>> {
     request: MembersRequest<ReceivedMembers>;
     response: MembersResponse<ReceivedMembers>;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface MembersError<ReceivedMembers extends Members<ObjectsCustom, User<ObjectsCustom>>> {
     request: MembersRequest<ReceivedMembers>;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface FetchingMembersAction<Meta> {
     type: typeof MembersActionType.FETCHING_MEMBERS;

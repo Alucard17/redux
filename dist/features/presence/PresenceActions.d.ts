@@ -1,7 +1,7 @@
+import Pubnub from 'pubnub';
 import { PresenceActionType } from './PresenceActionType.enum';
 import { PresenceState, AnyPresenceState } from './PresenceState';
 import { ActionMeta } from '../../foundations/ActionMeta';
-import { PubNubApiStatus } from '../../foundations/PubNubApi';
 export interface Presence<PresenceStateFields extends PresenceState = AnyPresenceState> {
     uuid: string;
     state?: PresenceStateFields;
@@ -35,11 +35,11 @@ export declare type PresenceStateResponse = PresenceState;
 export interface HereNowSuccess<ReceivedPresence extends Presence = Presence> {
     request: HereNowRequest;
     response: HereNowResponse<ReceivedPresence>;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface HereNowError {
     request: HereNowRequest;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface PresenceStateRequest {
     uuid?: string;
@@ -49,11 +49,11 @@ export interface PresenceStateRequest {
 export interface PresenceStateSuccess {
     request: PresenceStateRequest;
     response: PresenceStateResponse;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface PresenceStateError {
     request: PresenceStateRequest;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface FetchingHereNowAction<Meta extends ActionMeta> {
     type: PresenceActionType.FETCHING_HERE_NOW;
@@ -101,3 +101,4 @@ export interface StateChangeEventAction {
     type: typeof PresenceActionType.STATE_CHANGE_EVENT;
     payload: PresenceEventMessage;
 }
+export declare type PresenceListenerActions = JoinEventAction | LeaveEventAction | TimeoutEventAction | StateChangeEventAction;

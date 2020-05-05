@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { ErrorCreatingUserAction, UserCreatedAction, CreatingUserAction, UserRequest, UserSuccess, UserError, User } from '../UserActions';
+import { ErrorCreatingUserAction, UserCreatedAction, CreatingUserAction, UserSuccess, UserError, UserRequest, User } from '../UserActions';
 import { UserActionType } from '../UserActionType.enum';
 import { PubnubThunkContext } from '../../../foundations/ThunkTypes';
 import { ActionMeta, AnyMeta } from '../../../foundations/ActionMeta';

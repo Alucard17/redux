@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import { SpaceActionType } from '../SpaceActionType.enum';
-import { ErrorFetchingSpaceByIdAction, SpaceRetrievedAction, FetchingSpaceByIdAction, FetchSpaceByIdRequest, FetchSpaceByIdError, Space, FetchSpaceByIdSuccess } from '../SpaceActions';
+import { ErrorFetchingSpaceByIdAction, SpaceRetrievedAction, FetchingSpaceByIdAction, FetchSpaceByIdError, FetchSpaceByIdSuccess, FetchSpaceByIdRequest, Space } from '../SpaceActions';
 import { PubnubThunkContext } from '../../../foundations/ThunkTypes';
 import { ActionMeta, AnyMeta } from '../../../foundations/ActionMeta';
 export declare const fetchingSpaceById: <Meta extends ActionMeta>(payload: FetchSpaceByIdRequest, meta?: Meta | undefined) => FetchingSpaceByIdAction<Meta>;

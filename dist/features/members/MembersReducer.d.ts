@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
 import { MembersActions, Members } from './MembersActions';
 import { MembershipListenerActions, Membership } from '../../features/membership/MembershipActions';
-import { ObjectsCustom } from '../../foundations/ObjectsCustom';
-import { Space } from '../space/SpaceActions';
 import { AnyMeta } from '../../foundations/ActionMeta';
+import { ObjectsCustom } from 'foundations/ObjectsCustom';
+import { Space } from 'features/space/SpaceActions';
 export declare type MembersBySpaceIdState<ReceivedMembers extends Members<ObjectsCustom, Space<ObjectsCustom>>> = {
     byId: {
         [spaceId: string]: ReceivedMembers[];

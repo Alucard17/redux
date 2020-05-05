@@ -1,9 +1,9 @@
-import { PubNub } from './PubNubApi';
+import Pubnub from 'pubnub';
 /**
  * Describe thunk middleware context
  */
 export interface PubnubThunkContext {
     pubnub: {
-        api: PubNub;
+        api: Pubnub;
     };
 }

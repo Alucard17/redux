@@ -1,8 +1,10 @@
-import { Space } from '../../features/space/SpaceActions';
-import { PubNubApiStatus } from '../../foundations/PubNubApi';
+import Pubnub from 'pubnub';
 import { MembershipActionType } from './MembershipActionType.enum';
-import { ObjectsCustom, AnyCustom } from '../../foundations/ObjectsCustom';
 import { ActionMeta } from '../../foundations/ActionMeta';
+import { ObjectsCustom, AnyCustom } from 'foundations/ObjectsCustom';
+import { Space } from 'features/space/SpaceActions';
+export declare type FetchMembershipsCallback<MembershipType extends Membership<ObjectsCustom, Space<ObjectsCustom>>> = (status: Pubnub.PubnubStatus, response: FetchMembershipResponse<MembershipType>) => void;
+export declare type MembershipCallback<MembershipType extends Membership<ObjectsCustom, Space<ObjectsCustom>>> = (status: Pubnub.PubnubStatus, response: MembershipResponse<MembershipType>) => void;
 export interface Membership<CustomMembershipFields extends ObjectsCustom = AnyCustom, ReceivedSpace extends Space<ObjectsCustom> = Space> {
     id: string;
     custom?: CustomMembershipFields;
@@ -25,38 +27,24 @@ export interface MembershipFetchRequestOptions {
         totalCount?: boolean;
     };
 }
-export interface FetchMembershipResponse<ReceivedMembership extends Membership<ObjectsCustom, Space<ObjectsCustom>>> {
-    status: string;
-    data: ReceivedMembership[];
-}
-export interface FetchMembershipSuccess<ReceivedMembership extends Membership<ObjectsCustom, Space<ObjectsCustom>>> {
-    request: FetchMembershipRequest;
-    response: FetchMembershipResponse<ReceivedMembership>;
-    status: PubNubApiStatus;
-}
 export interface FetchMembershipRequest extends MembershipFetchRequestOptions {
     userId: string;
 }
-export interface FetchMembershipError {
-    request: FetchMembershipRequest;
-    status: PubNubApiStatus;
+export interface FetchMembershipResponse<ReceivedMembership extends Membership<ObjectsCustom, Space<ObjectsCustom>>> {
+    status: number;
+    data: ReceivedMembership[];
 }
 export declare type MembershipRequest<ReceivedMembership extends Membership<ObjectsCustom, Space<ObjectsCustom>>> = {
     userId: string;
     spaces: ReceivedMembership[];
 };
+export declare type MembershipLeaveRequest = {
+    userId: string;
+    spaces: string[];
+};
 export interface MembershipResponse<ReceivedMembership extends Membership<ObjectsCustom, Space<ObjectsCustom>>> {
-    status: string;
+    status: number;
     data: ReceivedMembership[];
-}
-export interface MembershipSuccess<ReceivedMembership extends Membership<ObjectsCustom, Space<ObjectsCustom>>> {
-    request: MembershipRequest<ReceivedMembership>;
-    response: MembershipResponse<ReceivedMembership>;
-    status: PubNubApiStatus;
-}
-export interface MembershipError<ReceivedMembership extends Membership<ObjectsCustom, Space<ObjectsCustom>>> {
-    request: MembershipRequest<ReceivedMembership>;
-    status: PubNubApiStatus;
 }
 export interface MembershipEventItem<ReceivedMembership extends Membership<ObjectsCustom, Space<ObjectsCustom>>> {
     userId: string;
@@ -71,6 +59,24 @@ export interface MembershipEventMessage<ReceivedMembership extends Membership<Ob
 export declare type MembershipListenerPayload<ReceivedMembership extends Membership<ObjectsCustom, Space<ObjectsCustom>> = Membership> = {
     message: MembershipEventMessage<ReceivedMembership>;
 };
+export interface FetchMembershipSuccess<ReceivedMembership extends Membership<ObjectsCustom, Space<ObjectsCustom>>> {
+    request: FetchMembershipRequest;
+    response: FetchMembershipResponse<ReceivedMembership>;
+    status: Pubnub.PubnubStatus;
+}
+export interface FetchMembershipError {
+    request: FetchMembershipRequest;
+    status: Pubnub.PubnubStatus;
+}
+export interface MembershipSuccess<ReceivedMembership extends Membership<ObjectsCustom, Space<ObjectsCustom>>> {
+    request: MembershipRequest<ReceivedMembership>;
+    response: MembershipResponse<ReceivedMembership>;
+    status: Pubnub.PubnubStatus;
+}
+export interface MembershipError<ReceivedMembership extends Membership<ObjectsCustom, Space<ObjectsCustom>>> {
+    request: MembershipRequest<ReceivedMembership>;
+    status: Pubnub.PubnubStatus;
+}
 export interface FetchingMembershipAction<Meta extends ActionMeta> {
     type: typeof MembershipActionType.FETCHING_MEMBERSHIP;
     payload: FetchMembershipRequest;

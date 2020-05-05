@@ -1,5 +1,5 @@
+import Pubnub from 'pubnub';
 import { SignalActionType } from './SignalActionType.enum';
-import { PubNubApiStatus } from '../../foundations/PubNubApi';
 export interface Signal {
     channel: string;
     message: object;
@@ -11,19 +11,18 @@ export interface SignalRequestOptions<SignalContentType> {
     message: SignalContentType;
     channel: string;
 }
-export interface SendSignalRequest<SignalContentType> extends SignalRequestOptions<SignalContentType> {
-}
+export declare type SendSignalRequest<SignalContentType> = SignalRequestOptions<SignalContentType>;
 export interface SendSignalResponse {
     timetoken: number;
 }
 export interface SendSignalError<SignalContentType> {
     request: SendSignalRequest<SignalContentType>;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface SendSignalSuccess<SignalContentType> {
     request: SendSignalRequest<SignalContentType>;
     response: SendSignalResponse;
-    status: PubNubApiStatus;
+    status: Pubnub.PubnubStatus;
 }
 export interface SignalReceivedAction<SignalType> {
     type: typeof SignalActionType.SIGNAL_RECEIVED;

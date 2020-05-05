@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import { UserActionType } from '../UserActionType.enum';
-import { ErrorFetchingUserByIdAction, UserRetrievedAction, FetchingUserByIdAction, FetchUserByIdRequest, FetchUserByIdError, User, FetchUserByIdSuccess } from '../UserActions';
+import { ErrorFetchingUserByIdAction, UserRetrievedAction, FetchingUserByIdAction, FetchUserByIdError, FetchUserByIdSuccess, FetchUserByIdRequest, User } from '../UserActions';
 import { PubnubThunkContext } from '../../../foundations/ThunkTypes';
 import { ActionMeta, AnyMeta } from '../../../foundations/ActionMeta';
 export declare const fetchingUserById: <Meta extends ActionMeta>(payload: FetchUserByIdRequest, meta?: Meta | undefined) => FetchingUserByIdAction<Meta>;
